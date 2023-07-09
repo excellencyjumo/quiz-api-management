@@ -1,0 +1,24 @@
+{
+  "name": "quiz-api",
+  "version": "1.0.0",
+  "description": "A flexible API for managing quizzes, questions, and user authentication.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/excellencyjumo/quiz-management-api.git"
+  },
+  "keywords": [
+    "\"quiz\"",
+    "\"management\"",
+    "\"API\""
+  ],
+  "author": "excellencyjumo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/excellencyjumo/quiz-management-api/issues"
+  },
+  "homepage": "https://github.com/excellencyjumo/quiz-management-api#readme"
+}
