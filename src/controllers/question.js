@@ -1,75 +1,81 @@
-const { sendResponse } = require('../utils/jwtUtils');
-const { QuestionRepository } = require('../repo/questionRepo');
+const questionModel = require('../models/question');
+const { sendResponse } = require('../utils/helper');
 
-// Add questions to a particular quiz
-const addQuestionToQuiz = async (req, res) => {
-  try {
-    const quizId = req.params.quiz_id;
-    const { question, options } = req.body;
+class QuestionController {
+  static async createQuestion(req, res) {
+    try {
+      const { question, options, duration, marks } = req.body;
+      const { quizId } = req.params;
 
-    // Add the question to the quiz
-    const newQuestion = await QuestionRepository.addQuestionToQuiz(quizId, question, options);
+      const newQuestion = await questionModel.createQuestion(question, options, duration, quizId, marks);
 
-    // Send response
-    return sendResponse(res, 201, 'Question added to quiz successfully', newQuestion);
-  } catch (error) {
-    console.error('Error adding question to quiz:', error);
-    return sendResponse(res, 500, 'Internal Server Error');
+      return sendResponse(res, 201, 'Question created successfully', newQuestion);
+    } catch (error) {
+      return sendResponse(res, 500, 'Error creating question', null);
+    }
   }
-};
 
-// Fetch all questions for a quiz
-const getAllQuestionsForQuiz = async (req, res) => {
-  try {
-    const quizId = req.params.quiz_id;
+  static async getAllQuestionsByQuiz(req, res) {
+    try {
+      const { quizId } = req.params;
 
-    // Get all questions for the quiz
-    const questions = await QuestionRepository.getAllQuestionsForQuiz(quizId);
+      const questions = await questionModel.getAllQuestionsByQuiz(quizId);
 
-    // Send response
-    return sendResponse(res, 200, 'Questions fetched successfully', questions);
-  } catch (error) {
-    console.error('Error fetching questions for quiz:', error);
-    return sendResponse(res, 500, 'Internal Server Error');
+      // verify questions are in the quiz 
+      if(!questions){
+        return sendResponse(res,400,"Questions not added yet")
+      }
+
+      return sendResponse(res, 200, 'Questions retrieved successfully', questions);
+    } catch (error) {
+      return sendResponse(res, 500, 'Error retrieving questions', null);
+    }
   }
-};
 
-// Edit a question
-const editQuestion = async (req, res) => {
-  try {
-    const questionId = req.params.question_id;
-    const { question, options } = req.body;
+  static async getQuestionById(req, res) {
+    try {
+      const { questionId } = req.params;
 
-    // Edit the question
-    const updatedQuestion = await QuestionRepository.editQuestion(questionId, question, options);
+      const question = await questionModel.getQuestionById(questionId);
 
-    // Send response
-    return sendResponse(res, 200, 'Question edited successfully', updatedQuestion);
-  } catch (error) {
-    console.error('Error editing question:', error);
-    return sendResponse(res, 500, 'Internal Server Error');
+      if (!question) {
+        return sendResponse(res, 404, 'Question not found', null);
+      }
+
+     // return sendResponse(res, 200, 'Question retrieved successfully', question);
+    } catch (error) {
+      return sendResponse(res, 500, 'Error retrieving question', null);
+    }
   }
-};
 
-// Remove a question from a quiz
-const removeQuestion = async (req, res) => {
-  try {
-    const questionId = req.params.question_id;
+  static async updateQuestion(req, res) {
+    try {
+      const { questionId } = req.params;
+      const { question, duration, marks } = req.body;
 
-    // Remove the question
-    await QuestionRepository.removeQuestion(questionId);
+      await this.getQuestionById(req,res);
+      
+      const updatedQuestion = await questionModel.updateQuestion(questionId, question, duration, marks);
 
-    // Send response
-    return sendResponse(res, 200, 'Question removed successfully');
-  } catch (error) {
-    console.error('Error removing question:', error);
-    return sendResponse(res, 500, 'Internal Server Error');
+      return sendResponse(res, 200, 'Question updated successfully', updatedQuestion);
+    } catch (error) {
+      return sendResponse(res, 500, 'Error updating question', null);
+    }
   }
-};
 
-module.exports = {
-  addQuestionToQuiz,
-  getAllQuestionsForQuiz,
-  editQuestion,
-  removeQuestion,
-};
+  static async deleteQuestion(req, res) {
+    try {
+      const { questionId } = req.params;
+
+      await this.getQuestionById(req,res);
+
+      await questionModel.deleteQuestion(questionId);
+
+      return sendResponse(res, 200, 'Question deleted successfully', null);
+    } catch (error) {
+      return sendResponse(res, 500, 'Error deleting question', null);
+    }
+  }
+}
+
+module.exports = QuestionController;

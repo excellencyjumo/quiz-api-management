@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser, checkAuthorization } = require('../middlewares/auth');
 const { validateQuestionCreationMiddleware } = require('../middlewares/validator');
-const Auth = require('../controllers/questionController');
+const questionController = require('../controllers/question');
 
 // Add questions to a particular quiz
-router.post('/quizzes/:quiz_id/questions', authenticateUser, checkAuthorization, validateQuestionCreationMiddleware, Auth.addQuestionToQuiz);
+router.post('/:quiz_id/questions', authenticateUser, checkAuthorization, validateQuestionCreationMiddleware, questionController.createQuestion);
 
 // Fetch all questions for a quiz
-router.get('/quizzes/:quiz_id/questions', authenticateUser, Auth.getAllQuestionsForQuiz);
+router.get('/:quiz_id/questions', authenticateUser, questionController.getAllQuestionsByQuiz);
 
 // Edit a question
-router.put('/quizzes/:quiz_id/questions/:question_id', authenticateUser, checkAuthorization, Auth.editQuestion);
+router.put('/:quiz_id/questions/:question_id', authenticateUser, checkAuthorization, questionController.updateQuestion);
 
 // Remove a question in a quiz
-router.delete('/quizzes/:quiz_id/questions/:question_id', authenticateUser, checkAuthorization, Auth.removeQuestion);
+router.delete('/:quiz_id/questions/:question_id', authenticateUser, checkAuthorization, questionController.deleteQuestion);
 
 module.exports = router;

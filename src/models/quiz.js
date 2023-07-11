@@ -1,7 +1,7 @@
 const db = require('../db');
 
 class Quiz {
-  async create({ name, description, createdBy }) {
+  static async create({ name, description, createdBy }) {
     const query = 'INSERT INTO quizzes (name, description, created_by) VALUES ($1, $2, $3) RETURNING *';
     const values = [name, description, createdBy];
 
@@ -14,7 +14,7 @@ class Quiz {
     }
   }
 
-  async find() {
+  static async find() {
     const query = 'SELECT * FROM quizzes';
 
     try {
@@ -26,7 +26,7 @@ class Quiz {
     }
   }
 
-  async findById(quizId) {
+  static async findById(quizId) {
     const query = 'SELECT * FROM quizzes WHERE id = $1';
     const values = [quizId];
 
@@ -39,7 +39,7 @@ class Quiz {
     }
   }
 
-  async findByIdAndUpdate(quizId, { name, description }) {
+  static async findByIdAndUpdate(quizId, { name, description }) {
     const query = 'UPDATE quizzes SET name = $1, description = $2 WHERE id = $3 RETURNING *';
     const values = [name, description, quizId];
 
@@ -52,7 +52,7 @@ class Quiz {
     }
   }
 
-  async findByIdAndDelete(quizId) {
+  static async findByIdAndDelete(quizId) {
     const query = 'DELETE FROM quizzes WHERE id = $1 RETURNING *';
     const values = [quizId];
 
@@ -65,7 +65,7 @@ class Quiz {
     }
   }
 
-  async closeQuiz(quizId) {
+ static async closeQuiz(quizId) {
     const query = 'UPDATE quizzes SET closed = true WHERE id = $1 RETURNING *';
     const values = [quizId];
 
@@ -79,4 +79,4 @@ class Quiz {
   }
 }
 
-module.exports = new Quiz();
+module.exports = Quiz;

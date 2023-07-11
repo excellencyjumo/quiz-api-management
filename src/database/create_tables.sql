@@ -6,6 +6,10 @@ CREATE TABLE Users (
   lastname VARCHAR(255) NOT NULL
 );
 
+
+--close_quiz COLUMN BOOLEAN
+--participants COLUMN ARRAY
+--updated_at WORKS ON TRIGGER FUNCTION
 CREATE TABLE Quizzes (
   quiz_id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -16,6 +20,9 @@ CREATE TABLE Quizzes (
   deleted_at TIMESTAMP
 );
 
+--OPTIONS COLUMN ARRAY
+--ANSWER COLUMN SMALLINT
+--UPDATED_AT COLUMN WORKS ON TRIGGER FUNCTION 
 CREATE TABLE Questions (
   question_id SERIAL PRIMARY KEY,
   question TEXT NOT NULL,
@@ -27,7 +34,6 @@ CREATE TABLE Questions (
 
 
 CREATE TABLE Participants (
-  participation_id SERIAL PRIMARY KEY,
   participant_id INTEGER REFERENCES Users(user_id),
   quiz_id INTEGER REFERENCES Quizzes(quiz_id),
   participation_date TIMESTAMP DEFAULT NOW(),

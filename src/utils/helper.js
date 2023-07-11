@@ -4,14 +4,14 @@ require('dotenv').config();
 
 // function to generate a JWT
 const generateToken = (userId) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: process.env.expiresIn });
   return token;
 };
 
 // function to verify a JWT
 const verifyToken = (token) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.jwtSECRET);
     return decoded.userId;
   } catch (error) {
     throw new Error('Invalid token');

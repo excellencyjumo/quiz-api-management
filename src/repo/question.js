@@ -39,15 +39,19 @@ class QuestionRepository {
 
   static async updateQuestion(questionId, question, duration, marks) {
     try {
-      const query = 'UPDATE questions SET question = $1, duration = $2, marks = $3 WHERE id = $4 RETURNING *';
-      const values = [question, duration, marks, questionId];
+      // Extract the question text and options from the question parameter
+      const { questionText, options } = question;
+  
+      const query = 'UPDATE questions SET question = $1, options = $2, duration = $3, marks = $4 WHERE id = $5 RETURNING *';
+      const values = [questionText, options, duration, marks, questionId];
       const result = await db.query(query, values);
-
+  
       return result.rows[0];
     } catch (error) {
       throw new Error('Error updating question');
     }
   }
+
 
   static async deleteQuestion(questionId) {
     try {
@@ -60,6 +64,4 @@ class QuestionRepository {
   }
 }
 
-module.exports = {
-  QuestionRepository,
-};
+module.exports = QuestionRepository;

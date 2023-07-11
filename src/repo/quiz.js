@@ -1,4 +1,4 @@
-const db = require('../config/connection');
+const db = require('../config/db');
 
 class QuizRepository {
   static async createQuiz(name, description, createdBy) {
@@ -82,6 +82,4 @@ class QuizRepository {
   }
 }
 
-module.exports = {
-  QuizRepository,
-};
+module.exports = QuizRepository

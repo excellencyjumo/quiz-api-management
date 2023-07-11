@@ -36,14 +36,15 @@ const login = async (req, res) => {
 
     // Check if user exists
     const user = await Auth.getUserByEmail(email);
+
     if (!user) {
-      return sendResponse(res, 401, 'Invalid email or password');
+      return sendResponse(res, 401, 'Invalid Email');
     }
 
     // Compare passwords
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
-      return sendResponse(res, 401, 'Invalid email or password');
+      return sendResponse(res, 401, 'Invalid password');
     }
 
     // Generate JWT token

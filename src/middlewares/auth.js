@@ -41,7 +41,7 @@ const checkAuthorization = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error('Error checking authorization:', error);
+    console.error('Error checking authorization: ', error.toString());
     return sendResponse(res, 500,'Internal Server Error');
   }
 };

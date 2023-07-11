@@ -4,8 +4,8 @@ const { validateSignUpMiddleware, validateLoginMiddleware } = require('../middle
 const Auth = require('../controllers/auth');
 
 // Sign up a user
-router.post('users/auth/signup', validateSignUpMiddleware, Auth.signUp);
+router.post('signup', validateSignUpMiddleware, Auth.signUp);
 // Log in a user
-router.post('users/auth/login', validateLoginMiddleware, Auth.login);
+router.post('login', validateLoginMiddleware, Auth.login);
 
 module.exports = router;

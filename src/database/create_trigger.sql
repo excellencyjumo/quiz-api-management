@@ -1,3 +1,4 @@
+-- Active: 1683826145931@@localhost@27017
 CREATE OR REPLACE FUNCTION update_quiz_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN

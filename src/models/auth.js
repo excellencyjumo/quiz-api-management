@@ -10,7 +10,7 @@ class User {
 
   static async getUserByEmail(email) {
     try {
-      const user = await UserRepository.getUserByEmail(email);
+      const user = await Auth.getUserByEmail(email);
       return user;
     } catch (error) {
       throw new Error('Error retrieving user');
@@ -20,7 +20,7 @@ class User {
   static async createUser(email, password, firstName, lastName) {
     try {
       // Create the user in the repository
-      const newUser = await UserRepository.createUser(email, password, firstName, lastName);
+      const newUser = await Auth.createUser(email, password, firstName, lastName);
 
       return new User(newUser.id, newUser.email, newUser.firstName, newUser.lastName);
     } catch (error) {
