@@ -1,3 +1,4 @@
+
 # Quiz Management API
 
 This API provides endpoints for managing quizzes, questions, and user authentication.
@@ -62,4 +63,6 @@ To run the tests, use the following command:
 ## License
 
 This project is licensed under the [MIT License](link-to-license-file).
+=======
 # quiz-api-management
+>>>>>>> 1d7715c0445556d17c83f333d9fc08ccae5bee20
