@@ -1,4 +1,3 @@
-
 # Quiz Management API
 
 This API provides endpoints for managing quizzes, questions, and user authentication.
@@ -6,11 +5,12 @@ This API provides endpoints for managing quizzes, questions, and user authentica
 ## Features
 
 - User registration and login
+- User authentication using JWT stored in cookies
 - Quiz creation, retrieval, update, and deletion
 - Question creation, retrieval, update, and deletion
 - Participant management for quizzes
 - Quiz attempt and scoring
-- User authentication using JWT stored in cookies
+
 
 ## Installation
 
@@ -63,6 +63,3 @@ To run the tests, use the following command:
 ## License
 
 This project is licensed under the [MIT License](link-to-license-file).
-=======
-# quiz-api-management
->>>>>>> 1d7715c0445556d17c83f333d9fc08ccae5bee20
