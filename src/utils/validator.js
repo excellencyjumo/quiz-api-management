@@ -25,48 +25,49 @@ const validateLogin = (data) => {
     password: Joi.string().required(),
   });
 
-  try{
+  try {
     return schema.validate(data);
-  } catch(error){
-    throw new Error("Validation error: ",error.toString())
+  } catch (error) {
+    throw new Error("Validation error: ", error.toString())
   }
 };
 
 // Validation function for quiz creation
 const validateQuizCreation = (data) => {
-    const schema = Joi.object({
-      name: Joi.string().required(),
-      description: Joi.string().required(),
-    });
-  
-    try {
-      const validatedData = schema.validate(data);
-      return validatedData;
-    } catch (error) {
-      throw new Error('Validation error');
-    }
-  };
-  
-  // Validation function for question creation
-  const validateQuestionCreation = (data) => {
-    const schema = Joi.object({
-      question: Joi.string().required(),
-      options: Joi.array().items(Joi.string()).min(2).max(4).required(),
-      duration: Joi.date().required(),
-      marks: Joi.number().integer().min(1).required(),
-    });
-  
-    try {
-      const validatedData = schema.validate(data);
-      return validatedData;
-    } catch (error) {
-      throw new Error('Validation error');
-    }
-  };
-  
-  module.exports = {
-    validateSignUp,
-    validateLogin,
-    validateQuizCreation,
-    validateQuestionCreation,
-  };
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+  });
+
+  try {
+    const validatedData = schema.validate(data);
+    return validatedData;
+  } catch (error) {
+    throw new Error('Validation error');
+  }
+};
+
+// Validation function for question creation
+const validateQuestionCreation = (data) => {
+  const schema = Joi.object({
+    question: Joi.string().required(),
+    options: Joi.array().items(Joi.string()).min(2).max(4).required(),
+    answer: Joi.number().min(1).max(5).required(),
+    duration: Joi.date().required(),
+    marks: Joi.number().integer().min(1).required(),
+  });
+
+  try {
+    const validatedData = schema.validate(data);
+    return validatedData;
+  } catch (error) {
+    throw new Error('Validation error');
+  }
+};
+
+module.exports = {
+  validateSignUp,
+  validateLogin,
+  validateQuizCreation,
+  validateQuestionCreation,
+};

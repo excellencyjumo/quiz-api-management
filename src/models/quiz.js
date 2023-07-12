@@ -1,80 +1,94 @@
-const db = require('../db');
+const quizRepo = require("../Repo/quiz.js");
 
 class Quiz {
-  static async create({ name, description, createdBy }) {
-    const query = 'INSERT INTO quizzes (name, description, created_by) VALUES ($1, $2, $3) RETURNING *';
-    const values = [name, description, createdBy];
+  constructor(id, name, description) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
 
+  static async create(name, description, createdBy) {
     try {
-      const result = await db.query(query, values);
-      const newQuiz = result.rows[0];
-      return newQuiz;
+      const newQuiz = await quizRepo.createQuiz(name, description, createdBy);
+
+      return new Quiz(
+        newQuiz.id,
+        newQuiz.name,
+        newQuiz.description,
+      );
     } catch (error) {
-      throw new Error('Failed to create a new quiz');
+      throw new Error('Error creating quiz');
     }
   }
 
-  static async find() {
-    const query = 'SELECT * FROM quizzes';
-
+  static async find(userId) {
     try {
-      const result = await db.query(query);
-      const quizzes = result.rows;
-      return quizzes;
+      const quizzes = await quizRepo.getAllQuizzesByUser(userId);
+
+      return quizzes.map((quiz) => new Quiz(
+        quiz.id,
+        quiz.name,
+        quiz.description
+      ));
     } catch (error) {
-      throw new Error('Failed to retrieve quizzes');
+      throw new Error('Error retrieving quizzes by user');
     }
   }
 
   static async findById(quizId) {
-    const query = 'SELECT * FROM quizzes WHERE id = $1';
-    const values = [quizId];
-
     try {
-      const result = await db.query(query, values);
-      const quiz = result.rows[0];
-      return quiz;
-    } catch (error) {
-      throw new Error('Failed to find the quiz');
+      const quiz = await quizRepo.findById(quizId);
+
+      if (!quiz) {
+        return null;
+      }
+
+      return new Quiz(
+        quiz.id,
+        quiz.name,
+        quiz.description
+      );
+    } 
+    catch (error) {
+      throw new Error('Error retrieving quiz by ID');
     }
   }
 
-  static async findByIdAndUpdate(quizId, { name, description }) {
-    const query = 'UPDATE quizzes SET name = $1, description = $2 WHERE id = $3 RETURNING *';
-    const values = [name, description, quizId];
-
+  static async updateQuiz(quizId, name, description) {
     try {
-      const result = await db.query(query, values);
-      const updatedQuiz = result.rows[0];
-      return updatedQuiz;
+      const updatedQuiz = await quizRepo.updateQuiz(quizId, name, description);
+
+      return new Quiz(
+        updatedQuiz.id,
+        updatedQuiz.name,
+        updatedQuiz.description
+      );
     } catch (error) {
-      throw new Error('Failed to update the quiz');
+      throw new Error('Error updating quiz');
     }
   }
 
-  static async findByIdAndDelete(quizId) {
-    const query = 'DELETE FROM quizzes WHERE id = $1 RETURNING *';
-    const values = [quizId];
-
+  static async deleteQuiz(quizId) {
     try {
-      const result = await db.query(query, values);
-      const deletedQuiz = result.rows[0];
-      return deletedQuiz;
+      await quizRepo.deleteQuiz(quizId);
     } catch (error) {
-      throw new Error('Failed to delete the quiz');
+      throw new Error('Error deleting quiz');
     }
   }
 
- static async closeQuiz(quizId) {
-    const query = 'UPDATE quizzes SET closed = true WHERE id = $1 RETURNING *';
-    const values = [quizId];
-
+  static async quizStatus(quizId) {
     try {
-      const result = await db.query(query, values);
-      const updatedQuiz = result.rows[0];
-      return updatedQuiz;
+      return await quizRepo.quizStatus(quizId);
     } catch (error) {
-      throw new Error('Failed to close the quiz');
+      throw new Error('Error checking quiz STATUS');
+    }
+  }
+
+  static async closeQuiz(quizId) {
+    try {
+      await quizRepo.closeQuiz(quizId);
+    } catch (error) {
+      throw new Error('Error closing quiz');
     }
   }
 }

@@ -32,28 +32,27 @@ class QuestionController {
     }
   }
 
-  static async getQuestionById(req, res) {
+  static async getQuestionById(questionId) {
     try {
-      const { questionId } = req.params;
-
       const question = await questionModel.getQuestionById(questionId);
-
       if (!question) {
-        return sendResponse(res, 404, 'Question not found', null);
+        return null;
       }
-
-     // return sendResponse(res, 200, 'Question retrieved successfully', question);
+      return question;
     } catch (error) {
-      return sendResponse(res, 500, 'Error retrieving question', null);
+      throw new Error(error);
     }
   }
 
   static async updateQuestion(req, res) {
     try {
-      const { questionId } = req.params;
+      const { quizId,questionId } = req.params;
       const { question, duration, marks } = req.body;
 
-      await this.getQuestionById(req,res);
+      const response = await this.getQuestionById(questionId);
+      if(!response || response.quizId !== quizId){
+        return sendResponse(res, 400, 'Question not Available ', null);
+      }
       
       const updatedQuestion = await questionModel.updateQuestion(questionId, question, duration, marks);
 
@@ -65,10 +64,14 @@ class QuestionController {
 
   static async deleteQuestion(req, res) {
     try {
-      const { questionId } = req.params;
+      const { quizId,questionId } = req.params;
 
-      await this.getQuestionById(req,res);
+      const response = await this.getQuestionById(questionId);
+      if(!response || response.quizId !== quizId){
+        return sendResponse(res, 400, 'Question not Available ', null);
+      }
 
+      // deleting question from {Questions}-table in database
       await questionModel.deleteQuestion(questionId);
 
       return sendResponse(res, 200, 'Question deleted successfully', null);

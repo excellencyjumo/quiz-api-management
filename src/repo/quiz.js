@@ -25,7 +25,7 @@ class QuizRepository {
     }
   }
 
-  static async getQuizById(quizId) {
+  static async findById(quizId) {
     try {
       const query = 'SELECT * FROM quizzes WHERE id = $1';
       const values = [quizId];
@@ -68,6 +68,18 @@ class QuizRepository {
       return result.rows[0].count > 0;
     } catch (error) {
       throw new Error('Error checking user attempt');
+    }
+  }
+
+  static async isQuizOpen(quizId) {
+    try {
+      const query = 'SELECT status FROM quizzes WHERE id = $1';
+      const values = [quizId];
+      const result = await db.query(query, values);
+
+      return result.rows[0].status; // Return the status value (true/false)
+    } catch (error) {
+      throw new Error('Error checking quiz status');
     }
   }
 

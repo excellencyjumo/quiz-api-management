@@ -49,7 +49,7 @@ class Question {
       const question = await questionRepo.getQuestionById(questionId);
 
       if (!question) {
-        return;
+        return null;
       }
 
       return new Question(
