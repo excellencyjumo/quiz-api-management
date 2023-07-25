@@ -1,4 +1,4 @@
-const Auth = require('../repo/auth');
+const Auth = require('./authRepo');
 
 class User {
   constructor(id, email, firstName, lastName) {
@@ -17,16 +17,17 @@ class User {
     }
   }
 
-  static async createUser(email, password, firstName, lastName) {
+  static async createUser(userId, email, password, firstName, lastName) {
     try {
       // Create the user in the repository
-      const newUser = await Auth.createUser(email, password, firstName, lastName);
-
-      return new User(newUser.id, newUser.email, newUser.firstName, newUser.lastName);
+      const newUser = await Auth.createUser(userId, email, password, firstName, lastName);
+  
+      return new User(newUser.user_id, newUser.email, newUser.firstname, newUser.lastname);
     } catch (error) {
-      throw new Error('Error creating user');
+      throw error;
     }
   }
+  
 
 }
 

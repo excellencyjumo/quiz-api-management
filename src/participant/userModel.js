@@ -1,4 +1,4 @@
-const userRepo = require('../repo/user');
+const userRepo = require('./userRepo');
 
 class User {
   static async attempt(userId, quizId, score) {

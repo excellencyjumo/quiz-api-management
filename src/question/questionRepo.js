@@ -1,4 +1,4 @@
-const db = require('../config/connection');
+const db = require('../config/db');
 
 class QuestionRepository {
   static async createQuestion(question, options, duration, quizId, marks) {

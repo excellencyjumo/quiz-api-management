@@ -1,4 +1,4 @@
-const questionModel = require('../models/question');
+const questionModel = require('./questionModel');
 const { sendResponse } = require('../utils/helper');
 
 class QuestionController {

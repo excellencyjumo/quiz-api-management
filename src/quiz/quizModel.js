@@ -1,4 +1,4 @@
-const quizRepo = require("../Repo/quiz.js");
+const quizRepo = require("./quizRepo.js");
 
 class Quiz {
   constructor(id, name, description) {
@@ -7,17 +7,18 @@ class Quiz {
     this.description = description;
   }
 
-  static async create(name, description, createdBy) {
+  static async create(quizId,name, description, createdBy) {
     try {
-      const newQuiz = await quizRepo.createQuiz(name, description, createdBy);
-
+      const newQuiz = await quizRepo.createQuiz(quizId, name, description, createdBy);
+      console.log(newQuiz)
       return new Quiz(
         newQuiz.id,
         newQuiz.name,
         newQuiz.description,
       );
+
     } catch (error) {
-      throw new Error('Error creating quiz');
+      throw new Error(error);
     }
   }
 

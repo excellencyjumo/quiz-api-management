@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser, checkAuthorization } = require('../middlewares/auth');
 const { validateQuizCreationMiddleware } = require('../middlewares/validator');
-const quizController = require('../controllers/quiz');
+const quizController = require('./quiz');
 
 // Create a new quiz
 router.post('/', authenticateUser, validateQuizCreationMiddleware, quizController.createQuiz);

@@ -1,4 +1,4 @@
-const questionRepo = require('../repo/question');
+const questionRepo = require('./questionRepo');
 
 class Question {
   constructor(id, question, options, duration, quizId, marks) {

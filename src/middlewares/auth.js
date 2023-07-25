@@ -1,20 +1,22 @@
-const {verifyToken} = require("../utils/helper")
+const {verifyToken, sendResponse} = require("../utils/helper")
 require('dotenv').config();
 const db = require('../config/db');
 
 // Middleware to authenticate the user
 const authenticateUser = (req, res, next) => {
+  //Get token from cookies
   const token = req.cookies.token;
-
   if (!token) {
     return sendResponse(res, 401,'Unauthorized');
   }
 
   try {
     const decoded = verifyToken(token);
-    req.userId = decoded.userId;
+    req.userId = decoded;
+    console.log(req.userId)
     next();
   } catch (error) {
+    console.log("Over here 2")
     return sendResponse(res, 401,'Unauthorized');
   }
 };

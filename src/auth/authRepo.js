@@ -15,7 +15,7 @@ class UserRepository {
 
   static async getUserById(userId) {
     try {
-      const query = 'SELECT * FROM users WHERE id = $1';
+      const query = 'SELECT * FROM users WHERE user_id = $1';
       const values = [userId];
       const result = await db.query(query, values);
 
@@ -25,15 +25,14 @@ class UserRepository {
     }
   }
 
-  static async createUser(email, password, firstName, lastName) {
+  static async createUser(userId,email, password, firstName, lastName) {
     try {
-      const query = 'INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4) RETURNING *';
-      const values = [email, password, firstName, lastName];
-      const result = await db.query(query, values);
-
-      return result.rows[0];
+      const query = 'INSERT INTO users (user_id,email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5)';
+      const values = [userId,email, password, firstName, lastName];
+      await db.query(query, values);
+      return this.getUserById(userId);
     } catch (error) {
-      throw new Error('Error creating user');
+      throw new Error(error);
     }
   }
 }

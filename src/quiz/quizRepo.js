@@ -1,15 +1,15 @@
 const db = require('../config/db');
 
 class QuizRepository {
-  static async createQuiz(name, description, createdBy) {
+  static async createQuiz(quizId,name, description, createdBy) {
     try {
-      const query = 'INSERT INTO quizzes (name, description, created_by) VALUES ($1, $2, $3) RETURNING *';
-      const values = [name, description, createdBy];
-      const result = await db.query(query, values);
-
-      return result.rows[0];
+      const query = 'INSERT INTO quizzes (quiz_id,name, description, created_by) VALUES ($1, $2, $3, $4)';
+      const values = [quizId, name, description, createdBy];
+      await db.query(query, values);
+      const result = await this.findById(quizId)
+      return result;
     } catch (error) {
-      throw new Error('Error creating quiz');
+      throw new Error(error);
     }
   }
 
@@ -27,10 +27,9 @@ class QuizRepository {
 
   static async findById(quizId) {
     try {
-      const query = 'SELECT * FROM quizzes WHERE id = $1';
+      const query = 'SELECT * FROM quizzes WHERE quiz_id = $1';
       const values = [quizId];
       const result = await db.query(query, values);
-
       return result.rows[0] || null;
     } catch (error) {
       throw new Error('Error retrieving quiz by ID');
@@ -39,7 +38,7 @@ class QuizRepository {
 
   static async updateQuiz(quizId, name, description) {
     try {
-      const query = 'UPDATE quizzes SET name = $1, description = $2 WHERE id = $3 RETURNING *';
+      const query = 'UPDATE quizzes SET name = $1, description = $2 WHERE quiz_id = $3 RETURNING *';
       const values = [name, description, quizId];
       const result = await db.query(query, values);
 
@@ -51,7 +50,7 @@ class QuizRepository {
 
   static async deleteQuiz(quizId) {
     try {
-      const query = 'DELETE FROM quizzes WHERE id = $1';
+      const query = 'DELETE FROM quizzes WHERE quiz_id = $1';
       const values = [quizId];
       await db.query(query, values);
     } catch (error) {

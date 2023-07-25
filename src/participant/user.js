@@ -1,5 +1,5 @@
-const { sendResponse } = require('../utils/helpers');
-const userModel = require('../models/user');
+const { sendResponse } = require('../utils/helper');
+const userModel = require('./userModel');
 
 class UserController {
 

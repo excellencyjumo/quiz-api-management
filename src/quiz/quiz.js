@@ -1,16 +1,21 @@
-const { sendResponse } = require('../utils/helpers');
-const quizModel = require('../models/quiz');
-const questionModel = require('../models/question');
-const userModel = require("../models/user")
+const { sendResponse } = require('../utils/helper');
+const { generateUniqueID } = require('../utils/helper');
+const quizModel = require('./quizModel');
+const questionModel = require('../question/questionModel');
+const userModel = require("../participant/userModel")
 
 class QuizController {
     static async createQuiz(req, res) {
         try {
             const { name, description } = req.body;
-            const userId = req.user.id; // Get the authenticated user's ID
-
+            const userId = req.userId; // Get the authenticated user's ID
+            console.log(userId)
+            //generate uniqueId for user
+            const quizId = generateUniqueID();
+            console.log(quizId);
+            
             // Create the quiz
-            const newQuiz = await quizModel.create(name, description, userId);
+            const newQuiz = await quizModel.create(quizId, name, description, userId);
 
             // Send response
             return sendResponse(res, 201, 'Quiz created successfully', newQuiz);

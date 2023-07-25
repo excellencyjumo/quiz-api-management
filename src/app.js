@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user')
-const quizRoutes = require('./routes/quiz');
-const questionRoutes = require('./routes/question');
+const authRoutes = require('./auth/authRoute');
+const userRoutes = require('./participant/userRoute')
+const quizRoutes = require('./quiz/quizRoute');
+const questionRoutes = require('./question/questionRoute');
 
 // Middleware
 app.use(express.json());
 
 // Routes
-app.use('users/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/users',userRoutes)
 app.use('/quizzes', quizRoutes);
 app.use('/quizzes', questionRoutes);

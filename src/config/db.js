@@ -4,8 +4,8 @@ require("dotenv").config();
 // Create a new PostgreSQL client object
 const client = new Client({
   host: process.env.LOCALHOST,
-  port: process.env.PORT,
-  database: process.env.DBASEURI,
+  port: process.env.DBPORT,
+  database: process.env.DBASE,
   user: process.env.DBUSERNAME,
   password: process.env.DBPASSWORD,
 });
