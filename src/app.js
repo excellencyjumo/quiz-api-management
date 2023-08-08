@@ -5,7 +5,7 @@ const userRoutes = require('./participant/userRoute')
 const quizRoutes = require('./quiz/quizRoute');
 const questionRoutes = require('./question/questionRoute');
 
-// Middleware
+// JSON BODY
 app.use(express.json());
 
 // Routes
